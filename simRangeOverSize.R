@@ -61,34 +61,38 @@ for (i in 1:length(rho)){
 }
 
 #Mean and Variance
+pdf("figures/Figure1_mean_variance.pdf")
 layout(matrix(1:4, ncol=2))
 
-plot(mean.range.overlap~mean.range.size, data=final1, xlab="Range size", main="Mean", ylab = "Range overlap size", col = rgb(0, 0, 139, 120, maxColorValue = 255), pch = 16)
+plot(mean.range.overlap~mean.range.size, data=final1, xlab="Range size", main="Mean", ylab = "Range overlap size", col = rgb(50, 100, 142, 120, maxColorValue = 255), pch = 16)
 abline(lm(mean.range.overlap~mean.range.size, data=final1))
 
-plot(mean.range.overlap~mean.range.size, data=final2, xlab="Range size", main="", ylab = "Range overlap size", col = rgb(239, 106, 80, 120, maxColorValue = 255), pch = 16)
+plot(mean.range.overlap~mean.range.size, data=final2, xlab="Range size", main="", ylab = "Range overlap size", col = rgb(182, 48, 139, 120, maxColorValue = 255), pch = 16)
 abline(lm(mean.range.overlap~mean.range.size, data=final2))
 
-plot(variance.range.overlap~variance.range.size, data=final1, xlab="Range size", main="Variance", ylab = "Range overlap size", col = rgb(0, 0, 139, 120, maxColorValue = 255), pch = 16)
+plot(variance.range.overlap~variance.range.size, data=final1, xlab="Range size", main="Variance", ylab = "Range overlap size", col = rgb(50, 100, 142, 120, maxColorValue = 255), pch = 16)
 abline(lm(variance.range.overlap~variance.range.size, data=final1))
 
-plot(variance.range.overlap~variance.range.size, data=final2, xlab="Range size", main="", ylab = "Range overlap size", col = rgb(239, 106, 80, 120, maxColorValue = 255), pch = 16)
+plot(variance.range.overlap~variance.range.size, data=final2, xlab="Range size", main="", ylab = "Range overlap size", col = rgb(182, 48, 139, 120, maxColorValue = 255), pch = 16)
 abline(lm(variance.range.overlap~variance.range.size, data=final2))
 
+dev.off()
 
 #Skewness and Kurtosis 
+pdf("figures/FigureS1_skewness_kurtosis.pdf")
 layout(matrix(1:4, ncol=2))
 
-plot(skewness.range.overlap~skewness.range.size, data=final1, xlab="Range size", main="Skewness", ylab = "Range overlap size", col = rgb(0, 0, 139, 120, maxColorValue = 255), pch = 16)
+plot(skewness.range.overlap~skewness.range.size, data=final1, xlab="Range size", main="Skewness", ylab = "Range overlap size", col = rgb(50, 100, 142, 120, maxColorValue = 255), pch = 16)
 abline(lm(skewness.range.overlap~skewness.range.size, data=final1))
 
-plot(skewness.range.overlap~skewness.range.size, data=final2, xlab="Range size", main="", ylab = "Range overlap size", col = rgb(239, 106, 80, 120, maxColorValue = 255), pch = 16)
+plot(skewness.range.overlap~skewness.range.size, data=final2, xlab="Range size", main="", ylab = "Range overlap size", col = rgb(182, 48, 139, 120, maxColorValue = 255), pch = 16)
 abline(lm(skewness.range.overlap~skewness.range.size, data=final2))
 
-plot(kurtosis.range.overlap~kurtosis.range.size, data=final1, xlab="Range size", main="Kurtosis", ylab = "Range overlap size", col = rgb(0, 0, 139, 120, maxColorValue = 255), pch = 16)
+plot(kurtosis.range.overlap~kurtosis.range.size, data=final1, xlab="Range size", main="Kurtosis", ylab = "Range overlap size", col = rgb(50, 100, 142, 120, maxColorValue = 255), pch = 16)
 abline(lm(kurtosis.range.overlap~kurtosis.range.size, data=final1))
 
-plot(kurtosis.range.overlap~kurtosis.range.size, data=final2, xlab="Range size", main="", ylab = "Range overlap size", col = rgb(239, 106, 80, 120, maxColorValue = 255), pch = 16)
+plot(kurtosis.range.overlap~kurtosis.range.size, data=final2, xlab="Range size", main="", ylab = "Range overlap size", col = rgb(182, 48, 139, 120, maxColorValue = 255), pch = 16)
 abline(lm(kurtosis.range.overlap~kurtosis.range.size, data=final2))
 
+dev.off()
 

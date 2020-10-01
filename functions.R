@@ -33,3 +33,18 @@ overcalc <- function(v1, v2) {
   ov <- min(max(v1), max(v2)) - max(min(v1), min(v2))
   ifelse(ov > 0, ov, 0)
 }
+
+calcMetrics <- function(matrix){
+  library(sna)
+  
+  deg<-degree(matrix, gmode = "graph")
+  bet<-betweenness(matrix, gmode = "graph")
+  clo<-closeness(matrix, gmode = "graph")
+  
+  res<-list()
+  res$degree<-deg
+  res$betweeness<-bet
+  res$closeness<-clo
+  
+  return(res)
+}
