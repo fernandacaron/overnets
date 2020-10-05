@@ -1,32 +1,93 @@
 rm(list=ls())
 
 library(sna)
+library(viridis)
 
 setwd("C:/Users/ferna/Documents/IC/overnets")
 
 source("codes/functions.R")
 
 D<-1
-rho<-seq(from = 0.1, to = 1, by = 0.1)
+rho<-seq(from = 0.001, to = 1, by = 0.002)
 meanlog<-rho*D
 S<-1000
+nsim<-100
 
-met1<-list()
-met1$dg<-met1$bt<-met1$cl<-matrix(nrow=S, ncol=length(rho))
-for (i in 1:length(rho)){
-  nsim<-10
+calc_TRUE<-function(meanlog){
+  met1<-list()
+  met1$dg<-met1$bt<-met1$cl<-matrix(nrow=S)
   dg<-bt<-cl<-matrix(nrow=S, ncol=nsim)
   for(j in 1:nsim){
-    overlap<-simRangeOver(meanlog=meanlog[1], S=S, truncate=TRUE)
+  overlap<-simRangeOver(meanlog=meanlog, S=S, truncate=TRUE)
+  diag(overlap)<-NA
+  
+  dg[,j]<-calcMetrics(overlap)$degree
+  bt[,j]<-calcMetrics(overlap)$betweeness
+  cl[,j]<-calcMetrics(overlap)$closeness
+  }
+  met1$dg<-sort(rowMeans(dg), decreasing=T)
+  met1$bt<-sort(rowMeans(bt), decreasing=T)
+  met1$cl<-sort(rowMeans(cl), decreasing=T)
+  return(met1)
+}
+
+
+calc_FALSE<-function(meanlog){
+  met2<-list()
+  met2$dg<-met2$bt<-met2$cl<-matrix(nrow=S)
+  dg<-bt<-cl<-matrix(nrow=S, ncol=nsim)
+  for(j in 1:nsim){
+    overlap<-simRangeOver(meanlog=meanlog, S=S, truncate=FALSE)
     diag(overlap)<-NA
     
     dg[,j]<-calcMetrics(overlap)$degree
     bt[,j]<-calcMetrics(overlap)$betweeness
     cl[,j]<-calcMetrics(overlap)$closeness
   }
-  met1$dg[,i]<-sort(rowMeans(dg), decreasing=T)
-  met1$bt[,i]<-sort(rowMeans(bt), decreasing=T)
-  met1$cl[,i]<-sort(rowMeans(cl), decreasing=T)
+  met2$dg<-sort(rowMeans(dg), decreasing=T)
+  met2$bt<-sort(rowMeans(bt), decreasing=T)
+  met2$cl<-sort(rowMeans(cl), decreasing=T)
+  return(met2)
+}
+
+
+met1<-list()
+met1$dg<-met1$bt<-met1$cl<-matrix(nrow=S, ncol=length(meanlog))
+for (j in 1:length(meanlog)){
+  input<-list()
+  for(i in 1:nsim){
+    input[[i]]<-c(meanlog[j])
+  }
+  xx<-lapply(input, calc_TRUE)
+  dg<-bt<-cl<-matrix(nrow=S, ncol=nsim)
+  for(i in 1:nsim){
+    dg[,i]<-xx[[i]]$dg
+    bt[,i]<-xx[[i]]$bt
+    cl[,i]<-xx[[i]]$cl
+  }
+  met1$dg[,j]<-sort(rowMeans(dg), decreasing=T)
+  met1$bt[,j]<-sort(rowMeans(bt), decreasing=T)
+  met1$cl[,j]<-sort(rowMeans(cl), decreasing=T)
+}
+
+
+met2<-list()
+met2$dg<-met2$bt<-met2$cl<-matrix(nrow=S, ncol=length(meanlog))
+for (j in 1:length(meanlog)){
+  input<-list()
+  for(i in 1:nsim){
+    input[[i]]<-c(meanlog[j])
+  }
+  xx<-lapply(input, calc_TRUE)
+  dg<-bt<-cl<-matrix(nrow=S, ncol=nsim)
+  for(i in 1:nsim){
+    dg[,i]<-xx[[i]]$dg
+    bt[,i]<-xx[[i]]$bt
+    cl[,i]<-xx[[i]]$cl
+  }
+  met2$dg[,j]<-sort(rowMeans(dg), decreasing=T)
+  met2$bt[,j]<-sort(rowMeans(bt), decreasing=T)
+  met2$cl[,j]<-sort(rowMeans(cl), decreasing=T)
 }
 
 layout(matrix(1:4, ncol=4, byrow=TRUE), widths = c(1, 1, 1, 0.4))
