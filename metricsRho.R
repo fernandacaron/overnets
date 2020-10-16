@@ -2,111 +2,77 @@ rm(list=ls())
 
 library(sna)
 library(viridis)
+library(svMisc)
 
-setwd("C:/Users/ferna/Documents/IC/overnets")
+setwd("~/overnets")
 
-source("codes/functions.R")
+source("functions.R")
 
-D<-1
-rho<-seq(from = 0.001, to = 1, by = 0.002)
-meanlog<-rho*D
-S<-1000
-nsim<-100
-
-calc_TRUE<-function(meanlog){
-  met1<-list()
-  met1$dg<-met1$bt<-met1$cl<-matrix(nrow=S)
-  dg<-bt<-cl<-matrix(nrow=S, ncol=nsim)
-  for(j in 1:nsim){
-  overlap<-simRangeOver(meanlog=meanlog, S=S, truncate=TRUE)
-  diag(overlap)<-NA
-  
-  dg[,j]<-calcMetrics(overlap)$degree
-  bt[,j]<-calcMetrics(overlap)$betweeness
-  cl[,j]<-calcMetrics(overlap)$closeness
-  }
-  met1$dg<-sort(rowMeans(dg), decreasing=T)
-  met1$bt<-sort(rowMeans(bt), decreasing=T)
-  met1$cl<-sort(rowMeans(cl), decreasing=T)
-  return(met1)
-}
-
-
-calc_FALSE<-function(meanlog){
-  met2<-list()
-  met2$dg<-met2$bt<-met2$cl<-matrix(nrow=S)
-  dg<-bt<-cl<-matrix(nrow=S, ncol=nsim)
-  for(j in 1:nsim){
-    overlap<-simRangeOver(meanlog=meanlog, S=S, truncate=FALSE)
-    diag(overlap)<-NA
-    
-    dg[,j]<-calcMetrics(overlap)$degree
-    bt[,j]<-calcMetrics(overlap)$betweeness
-    cl[,j]<-calcMetrics(overlap)$closeness
-  }
-  met2$dg<-sort(rowMeans(dg), decreasing=T)
-  met2$bt<-sort(rowMeans(bt), decreasing=T)
-  met2$cl<-sort(rowMeans(cl), decreasing=T)
-  return(met2)
-}
-
+meanlog<-seq(from = -5, to = 1, by = 0.06)
+S<-100
+reps<-100
 
 met1<-list()
+rho1<-numeric()
 met1$dg<-met1$bt<-met1$cl<-matrix(nrow=S, ncol=length(meanlog))
 for (j in 1:length(meanlog)){
-  input<-list()
-  for(i in 1:nsim){
-    input[[i]]<-c(meanlog[j])
+  progress(j, max.value=length(meanlog))
+  dg<-bt<-cl<-matrix(nrow=S, ncol=reps)
+  for(i in 1:reps){
+    overlap<-simRangeOver(meanlog=meanlog[j], S=S, truncate=TRUE)$over
+    rho1[j]<-mean(diag(overlap))
+    diag(overlap)<-NA
+    #overlap[overlap > 0] <- 1
+    
+    dg[,i]<-sort(calcMetrics(overlap)$degree, decreasing=T)
+    bt[,i]<-sort(calcMetrics(overlap)$betweeness, decreasing=T)
+    cl[,i]<-sort(calcMetrics(overlap)$closeness, decreasing=T)
   }
-  xx<-lapply(input, calc_TRUE)
-  dg<-bt<-cl<-matrix(nrow=S, ncol=nsim)
-  for(i in 1:nsim){
-    dg[,i]<-xx[[i]]$dg
-    bt[,i]<-xx[[i]]$bt
-    cl[,i]<-xx[[i]]$cl
-  }
-  met1$dg[,j]<-sort(rowMeans(dg), decreasing=T)
-  met1$bt[,j]<-sort(rowMeans(bt), decreasing=T)
-  met1$cl[,j]<-sort(rowMeans(cl), decreasing=T)
+  met1$dg[,j]<-rowMeans(dg)
+  met1$bt[,j]<-rowMeans(bt)
+  met1$cl[,j]<-rowMeans(cl)
 }
 
-
+rho2<-numeric()
 met2<-list()
 met2$dg<-met2$bt<-met2$cl<-matrix(nrow=S, ncol=length(meanlog))
 for (j in 1:length(meanlog)){
-  input<-list()
-  for(i in 1:nsim){
-    input[[i]]<-c(meanlog[j])
+  progress(j, max.value=length(meanlog))
+  dg<-bt<-cl<-matrix(nrow=S, ncol=reps)
+  for(i in 1:reps){
+    overlap<-simRangeOver(meanlog=meanlog[j], S=S, truncate=FALSE)$over
+    rho2[j]<-mean(diag(overlap))
+    diag(overlap)<-NA
+    #overlap[overlap > 0] <- 1
+    
+    dg[,i]<-sort(calcMetrics(overlap)$degree, decreasing=T)
+    bt[,i]<-sort(calcMetrics(overlap)$betweeness, decreasing=T)
+    cl[,i]<-sort(calcMetrics(overlap)$closeness, decreasing=T)
   }
-  xx<-lapply(input, calc_TRUE)
-  dg<-bt<-cl<-matrix(nrow=S, ncol=nsim)
-  for(i in 1:nsim){
-    dg[,i]<-xx[[i]]$dg
-    bt[,i]<-xx[[i]]$bt
-    cl[,i]<-xx[[i]]$cl
-  }
-  met2$dg[,j]<-sort(rowMeans(dg), decreasing=T)
-  met2$bt[,j]<-sort(rowMeans(bt), decreasing=T)
-  met2$cl[,j]<-sort(rowMeans(cl), decreasing=T)
+  met2$dg[,j]<-rowMeans(dg)
+  met2$bt[,j]<-rowMeans(bt)
+  met2$cl[,j]<-rowMeans(cl)
 }
 
+
+pdf("figures/Figure4.pdf", width=8, height=4)
 layout(matrix(1:4, ncol=4, byrow=TRUE), widths = c(1, 1, 1, 0.4))
-par(mar = c(4, 4, 4, 1))
-col <- magma(10)[as.numeric(cut(rho, breaks = 10))]
+rbPal1 <- colorRampPalette(c(viridis(20)[6:14]), alpha=TRUE)
+col1 <- rbPal1(101)[as.numeric(cut(1:length(rho1), breaks = 101))]
 
 plot(met1$dg[,1], ylab="Degree", xlab="rank", ylim=range(met1$dg), type="n") 
-for (i in 1:length(rho)){
-  lines(met1$dg[,i], col=col[i])
+for (i in 1:length(rho1)){
+  lines(met1$dg[,i], col=col1[i])
 }
 
 plot(met1$bt[,1], ylab="Betweenness", xlab="rank", ylim=range(met1$bt), type="n") 
-for (i in 1:100){
-  lines(met1$bt[,i], col=col[i])
+for (i in 1:length(rho1)){
+  lines(met1$bt[,i], col=col1[i])
 }
 
 plot(met1$cl[,1], ylab="Closeness", xlab="rank", ylim=range(met1$cl), type="n") 
-for (i in 1:100){
-  lines(met1$cl[,i], col=col[i])
+for (i in 1:length(rho1)){
+  lines(met1$cl[,i], col=col1[i])
 }
 
 color.bar <- function(lut, min, max = -min, nticks = 11, ticks = seq(min, max, len = nticks), title = "") {
@@ -121,5 +87,33 @@ color.bar <- function(lut, min, max = -min, nticks = 11, ticks = seq(min, max, l
   }
 }
 
-color.bar(col, min = 0, max = 1, title = "")
+y1<-round(rho1, digits=2)
+color.bar(col1, min = min(y1), max = max(y1), title = "")
 mtext(expression(rho))
+dev.off()
+
+
+pdf("figures/FigureS2.pdf", width=8, height=4)
+layout(matrix(1:4, ncol=4, byrow=TRUE), widths = c(1, 1, 1, 0.4))
+rbPal2 <- colorRampPalette(c(viridis(20)[6:14]), alpha=TRUE)
+col2 <- rbPal2(101)[as.numeric(cut(1:length(rho2), breaks = 101))]
+
+plot(met2$dg[,1], ylab="Degree", xlab="rank", ylim=range(met2$dg), type="n") 
+for (i in 1:length(rho2)){
+  lines(met2$dg[,i], col=col2[i])
+}
+
+plot(met2$bt[,1], ylab="Betweenness", xlab="rank", ylim=range(met2$bt), type="n") 
+for (i in 1:length(rho2)){
+  lines(met2$bt[,i], col=col2[i])
+}
+
+plot(met2$cl[,1], ylab="Closeness", xlab="rank", ylim=range(met2$cl), type="n") 
+for (i in 1:length(rho2)){
+  lines(met2$cl[,i], col=col2[i])
+}
+
+y2<-round(rho2, digits=2)
+color.bar(col2, min = min(y2), max = max(y2), title = "")
+mtext(expression(rho))
+dev.off()
