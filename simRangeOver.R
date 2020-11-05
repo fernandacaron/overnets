@@ -8,6 +8,7 @@ simRangeOver <- function(meanlog, S, truncate=TRUE) {
   library(moments)
   S <- S
   range.sizes <- rlnorm(S, meanlog = meanlog)
+  rho<-round(mean(range.sizes), digits = 3)
   if(truncate==TRUE) range.sizes[range.sizes > 1] <- 1
   range.limits <- matrix(ncol = 2, nrow = S)
   midpoint <- runif(S, min = 0, max = 1)
@@ -31,5 +32,8 @@ simRangeOver <- function(meanlog, S, truncate=TRUE) {
       overlap[i, j] <- overcalc(pair[1, ], pair[2, ])
     }
   }
-  return(overlap)
+  res<-list()
+  res$rho<-rho
+  res$over<-overlap
+  return(res)
 }

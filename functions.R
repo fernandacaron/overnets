@@ -33,6 +33,41 @@ simRangeOver <- function(meanlog, S, truncate=TRUE) {
   return(res)
 }
 
+
+simRangeOver2 <- function(meanlog, S, truncate=TRUE, D_min=D_min, D_max=D_max) {
+  library(moments)
+  S <- S
+  range.sizes <- rlnorm(S, meanlog = meanlog)
+  if(truncate==TRUE) range.sizes[range.sizes > D_max] <- D_max
+  rho<-mean(range.sizes)/(D_max-D_min)
+  range.limits <- matrix(ncol = 2, nrow = S)
+  midpoint <- runif(S, min = D_min, max = D_max)
+  for (i in 1:S) {
+    half.rangesizes <- range.sizes/2
+    range.limits[i, 1] <- midpoint[i] - half.rangesizes[i]
+    range.limits[i, 2] <- midpoint[i] + half.rangesizes[i]
+  }
+  if(truncate==TRUE) range.limits[range.limits > D_max] <- D_max
+  if(truncate==TRUE) range.limits[range.limits < D_min] <- D_min
+  
+  overlap <- matrix(nrow = S, ncol = S)
+  overcalc <- function(v1, v2) {
+    ov <- min(max(v1), max(v2)) - max(min(v1), min(v2))
+    ifelse(ov > 0, ov, 0)
+  }
+  
+  for (i in 1:S) {
+    for (j in 1:S) {
+      pair <- rbind(range.limits[i, ], range.limits[j, ])
+      overlap[i, j] <- overcalc(pair[1, ], pair[2, ])
+    }
+  }
+  res<-list()
+  res$rho<-rho
+  res$over<-overlap
+  return(res)
+}
+
 overcalc <- function(v1, v2) {
   ov <- min(max(v1), max(v2)) - max(min(v1), min(v2))
   ifelse(ov > 0, ov, 0)
