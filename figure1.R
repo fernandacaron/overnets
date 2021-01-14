@@ -6,6 +6,7 @@ library(ggplot2)
 library(GGally)
 library(egg)
 library(viridis)
+library(igraph)
 
 setwd("C:/Users/ferna/Documents/IC/overnets")
 
@@ -15,11 +16,11 @@ meanlog<-c(-3.5, -1.2)
 
 S <- 10
 range.sizes1 <- rlnorm(S, meanlog=meanlog[1])
-#range.sizes2 <- rlnorm(S, meanlog=meanlog[2])
+range.sizes2 <- rlnorm(S, meanlog=meanlog[2])
 rho1<-round(mean(range.sizes1), digits = 2)
-#rho2<-round(mean(range.sizes2), digits = 2)
+rho2<-round(mean(range.sizes2), digits = 2)
 rho1
-#rho2
+rho2
 range.sizes1[range.sizes1>1]<-1
 range.sizes2[range.sizes2>1]<-1
 range.limits1 <- matrix(ncol = 2, nrow = S)
@@ -63,7 +64,7 @@ l1 <- layout.norm(l1, ymin=-1, ymax=1, xmin=-1, xmax=1)
 l2<-layout.circle(network2)
 l2 <- layout.norm(l2, ymin=-1, ymax=1, xmin=-1, xmax=1)
 
-pdf("figures/Figure1.pdf")
+pdf("figures/Figure1.2.pdf")
 layout(matrix(1:4, ncol=2))
 plot(1, xlim = c(0, 1), ylim = c(1, S), type = "n", xlab = "D", ylab = "Species ID",
      main = bquote(rho == 0.10))
@@ -76,9 +77,9 @@ for (j in 1:S) {
   lines(range.limits2[j,], c(j, j))
 }
 plot(network1, rescale=F, layout=l1*1.4, vertex.size=15, vertex.label=NA, edge.color="gray",
-     vertex.color=viridis(3)[3], vertex.frame.color=viridis(3)[3])
+     vertex.color="black", vertex.frame.color="black")
 plot(network2, rescale=F, layout=l2*1.4, vertex.size=15, vertex.label=NA, edge.color="gray",
-     vertex.color=viridis(3)[1], vertex.frame.color=viridis(3)[1])
+     vertex.color="black", vertex.frame.color="black")
 
 dev.off()
 
