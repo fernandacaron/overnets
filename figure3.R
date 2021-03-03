@@ -1,18 +1,20 @@
 rm(list=ls())
 
-setwd("C:/Users/ferna/Documents/IC/overnets")
-
-source("codes/functions.R")
+source("functions.R")
 
 library(MASS)
 library(viridis)
 
+#This code will create plots of the expected average number of overlapping 
+#species, and of the expected relationship between rho and range size overlap, 
+#and between the variance of range size and variance of range size overlap.
+
+#This function generates range overlap distribution across a set of predefined 
+#meanlog values for a given sdlog, calculates the average number of overlapping 
+#species by counting how many species an individual overlaps with, and taking 
+#the average across all species in a matrix. The results are returned in the 
+#form of points plotted in an already called plot.
 meanNumOverSppFun<-function(sdlog, S, truncate, col=col){
-	#This function generates range overlap distribution for a given 
-	#meanlog or sdlog and calculates the average number of overlapping
-	#species by counting how with how many species a individual overlaps
-	#and taking the average across all species in a matrix
-	
 	meanlog<-seq(from = -4, to = 0.5, by = 0.05)
 	meanNumOverSpp<-matrix(ncol=2,nrow=length(meanlog))
 	
@@ -27,15 +29,13 @@ meanNumOverSppFun<-function(sdlog, S, truncate, col=col){
 	}
 	meanNumOverSpp<-meanNumOverSpp[order(meanNumOverSpp[,1]),]
 	points(meanNumOverSpp[,1], meanNumOverSpp[,2], col=col, pch=16)
-	}
+}
 
 
+#This function plots points corresponding to the expected mean range overlap 
+#for a rho value if sdlog is given, or the expected variance of range overlap 
+#for a value of the variance of range size if meanlog is given.
 plotRho<-function(meanlog, sdlog, S, truncate, col=col){
-  #This function generates a plot of mean range overlap by 
-  #mean range size or variance of range overlap by variance of 
-  #range size, for a given sdlog or meanlog, respectively, for S
-  #species, truncating or not.
-  
   if(missing(meanlog)){
     meanlog<-seq(from = -4, to = 0.5, by = 0.012)
     rhoMean<-matrix(ncol=2, nrow=length(meanlog))
@@ -72,7 +72,7 @@ plotRho<-function(meanlog, sdlog, S, truncate, col=col){
 S<-10000
 
 #FigA
-pdf("figures/Figure3.pdf")
+pdf("Figure3.pdf")
 layout(matrix(1:9, ncol=3, byrow=TRUE), widths = c(1, 1, 0.4))
 par(mar = c(4, 4, 4, 1))
 plot(-1, ylim=c(0, S), xlim=c(-4, 0.5), type="n", xlab=expression(rho), 

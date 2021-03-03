@@ -1,7 +1,7 @@
 rm(list=ls())
 
-#Creating range sizes for 20 species at random, plotting the range sizes 
-#in order in the middle of the Domain and then spread across the Domain 
+#This code will create range sizes for 20 species, plot the range sizes 
+#in order in the middle of the Domain, and then spread them across the Domain 
 #to show how truncation works.
 
 S<-20
