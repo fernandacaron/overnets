@@ -195,55 +195,55 @@ sim<-function(meanlog, sdlog, S, truncate=TRUE, Dmin, Dmax, nsim1, nsim2){
   return(sim)
 }
 
-sim.MAH.T<-sim(meanlog=meanlog.MAH, sdlog=sdlog.MAH, S=S.MAH, truncate=FALSE, 
+sim.MAH.NT<-sim(meanlog=meanlog.MAH, sdlog=sdlog.MAH, S=S.MAH, truncate=FALSE, 
                Dmin=min(datMAH$MIN), Dmax=max(datMAH$MAX), nsim1, nsim2)
-simMeanNumOverSpp.MAH.T<-sim.MAH.T$MeanNumOverSpp
-simRho.MAH.T<-sim.MAH.T$Rho
-simVarOver.MAH.T<-sim.MAH.T$VarOver
-simMeanOver.MAH.T<-sim.MAH.T$MeanOver
-simDeg.MAH.T<-sim.MAH.T$Deg
-simBet.MAH.T<-sim.MAH.T$Bet
-simClo.MAH.T<-sim.MAH.T$Clo
+simMeanNumOverSpp.MAH.NT<-sim.MAH.NT$MeanNumOverSpp
+simRho.MAH.NT<-sim.MAH.NT$Rho
+simVarOver.MAH.NT<-sim.MAH.NT$VarOver
+simMeanOver.MAH.NT<-sim.MAH.NT$MeanOver
+simDeg.MAH.NT<-sim.MAH.NT$Deg
+simBet.MAH.NT<-sim.MAH.NT$Bet
+simClo.MAH.NT<-sim.MAH.NT$Clo
 
-sim.CDH.T<-sim(meanlog=meanlog.CDH, sdlog=sdlog.CDH, S=S.CDH, truncate=FALSE, 
+sim.CDH.NT<-sim(meanlog=meanlog.CDH, sdlog=sdlog.CDH, S=S.CDH, truncate=FALSE, 
                Dmin=min(datCDH$MIN), Dmax=max(datCDH$MAX), nsim1, nsim2)
-simMeanNumOverSpp.CDH.T<-sim.CDH.T$MeanNumOverSpp
-simRho.CDH.T<-sim.CDH.T$Rho
-simVarOver.CDH.T<-sim.CDH.T$VarOver
-simMeanOver.CDH.T<-sim.CDH.T$MeanOver
-simDeg.CDH.T<-sim.CDH.T$Deg
-simBet.CDH.T<-sim.CDH.T$Bet
-simClo.CDH.T<-sim.CDH.T$Clo
+simMeanNumOverSpp.CDH.NT<-sim.CDH.NT$MeanNumOverSpp
+simRho.CDH.NT<-sim.CDH.NT$Rho
+simVarOver.CDH.NT<-sim.CDH.NT$VarOver
+simMeanOver.CDH.NT<-sim.CDH.NT$MeanOver
+simDeg.CDH.NT<-sim.CDH.NT$Deg
+simBet.CDH.NT<-sim.CDH.NT$Bet
+simClo.CDH.NT<-sim.CDH.NT$Clo
 
-sim.CAN.T<-sim(meanlog=meanlog.CAN, sdlog=sdlog.CAN, S=S.CAN, truncate=FALSE, 
+sim.CAN.NT<-sim(meanlog=meanlog.CAN, sdlog=sdlog.CAN, S=S.CAN, truncate=FALSE, 
                Dmin=min(datCAN$MIN), Dmax=max(datCAN$MAX), nsim1, nsim2)
-simMeanNumOverSpp.CAN.T<-sim.CAN.T$MeanNumOverSpp
-simRho.CAN.T<-sim.CAN.T$Rho
-simVarOver.CAN.T<-sim.CAN.T$VarOver
-simMeanOver.CAN.T<-sim.CAN.T$MeanOver
-simDeg.CAN.T<-sim.CAN.T$Deg
-simBet.CAN.T<-sim.CAN.T$Bet
-simClo.CAN.T<-sim.CAN.T$Clo
+simMeanNumOverSpp.CAN.NT<-sim.CAN.NT$MeanNumOverSpp
+simRho.CAN.NT<-sim.CAN.NT$Rho
+simVarOver.CAN.NT<-sim.CAN.NT$VarOver
+simMeanOver.CAN.NT<-sim.CAN.NT$MeanOver
+simDeg.CAN.NT<-sim.CAN.NT$Deg
+simBet.CAN.NT<-sim.CAN.NT$Bet
+simClo.CAN.NT<-sim.CAN.NT$Clo
 
-sim.NAN.T<-sim(meanlog=meanlog.NAN, sdlog=sdlog.NAN, S=S.NAN, truncate=FALSE, 
+sim.NAN.NT<-sim(meanlog=meanlog.NAN, sdlog=sdlog.NAN, S=S.NAN, truncate=FALSE, 
                Dmin=min(datNAN$MIN), Dmax=max(datNAN$MAX), nsim1, nsim2)
-simMeanNumOverSpp.NAN.T<-sim.NAN.T$MeanNumOverSpp
-simRho.NAN.T<-sim.NAN.T$Rho
-simVarOver.NAN.T<-sim.NAN.T$VarOver
-simMeanOver.NAN.T<-sim.NAN.T$MeanOver
-simDeg.NAN.T<-sim.NAN.T$Deg
-simBet.NAN.T<-sim.NAN.T$Bet
-simClo.NAN.T<-sim.NAN.T$Clo
+simMeanNumOverSpp.NAN.NT<-sim.NAN.NT$MeanNumOverSpp
+simRho.NAN.NT<-sim.NAN.NT$Rho
+simVarOver.NAN.NT<-sim.NAN.NT$VarOver
+simMeanOver.NAN.NT<-sim.NAN.NT$MeanOver
+simDeg.NAN.NT<-sim.NAN.NT$Deg
+simBet.NAN.NT<-sim.NAN.NT$Bet
+simClo.NAN.NT<-sim.NAN.NT$Clo
 
-sim.TEP.T<-sim(meanlog=meanlog.TEP, sdlog=sdlog.TEP, S=S.TEP, truncate=FALSE, 
+sim.TEP.NT<-sim(meanlog=meanlog.TEP, sdlog=sdlog.TEP, S=S.TEP, truncate=FALSE, 
                Dmin=min(datTEP$MIN), Dmax=max(datTEP$MAX), nsim1, nsim2)
-simMeanNumOverSpp.TEP.T<-sim.TEP.T$MeanNumOverSpp
-simRho.TEP.T<-sim.TEP.T$Rho
-simVarOver.TEP.T<-sim.TEP.T$VarOver
-simMeanOver.TEP.T<-sim.TEP.T$MeanOver
-simDeg.TEP.T<-sim.TEP.T$Deg
-simBet.TEP.T<-sim.TEP.T$Bet
-simClo.TEP.T<-sim.TEP.T$Clo
+simMeanNumOverSpp.TEP.NT<-sim.TEP.NT$MeanNumOverSpp
+simRho.TEP.NT<-sim.TEP.NT$Rho
+simVarOver.TEP.NT<-sim.TEP.NT$VarOver
+simMeanOver.TEP.NT<-sim.TEP.NT$MeanOver
+simDeg.TEP.NT<-sim.TEP.NT$Deg
+simBet.TEP.NT<-sim.TEP.NT$Bet
+simClo.TEP.NT<-sim.TEP.NT$Clo
 
 pdf("Figure5.pdf", width=12, height=14)
 layout(matrix(1:35, nrow=7, ncol=5, byrow=T))
