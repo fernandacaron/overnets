@@ -106,7 +106,7 @@ netStats <- function(meanlog, sdlog, S, Dmin, Dmax, truncate = TRUE) {
 
 	if(missing(sdlog)){
 	res <- list()
-	res$bt <- res$cl <- res$dg <- matrix(ncol = S, nrow = nreps)
+	res$bt <- res$cl <- res$dg <- matrix(ncol = S, nrow = length(meanlog))
 	for (i in 1:length(meanlog)) {
 		x <- nStats(meanlog[i], sdlog=1, S, Dmin, Dmax, truncate = TRUE)
 		res$bt[i, ] <- x$bt
@@ -116,7 +116,7 @@ netStats <- function(meanlog, sdlog, S, Dmin, Dmax, truncate = TRUE) {
 	res
 	} else { if(missing(meanlog)) {
 	res <- list()
-	res$bt <- res$cl <- res$dg <- matrix(ncol = S, nrow = nreps)
+	res$bt <- res$cl <- res$dg <- matrix(ncol = S, nrow = length(sdlog))
 	for (i in 1:length(sdlog)) {
 		x <- nStats(meanlog=0, sdlog=sdlog[i], S, Dmin, Dmax, truncate = TRUE)
 		res$bt[i, ] <- x$bt
